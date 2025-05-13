@@ -12,8 +12,8 @@ set -o nounset
 # WARNING: Runtime can take a few hours (mostly downloading and later cpio extraction)
 # and will consume around 10GB in `pwd`/download in total !!!
 
-VERSION=6.1
-URI="https://download.opensuse.org/distribution/leap-micro/$VERSION/product/repo/openSUSE-Leap-Micro-$VERSION-x86_64"
+#VERSION=
+URI="https://download.opensuse.org/tumbleweed/repo/oss/"
 # needed only for the tar.bz archive name
 # https://serverfault.com/questions/557350/parse-an-rpm-name-into-its-components
 function parse_rpm() { RPM=$1;B=${RPM##*/};B=${B%.rpm};A=${B##*.};B=${B%.*};R=${B##*-};B=${B%-*};V=${B##*-};B=${B%-*};N=$B;echo "$N"; }
