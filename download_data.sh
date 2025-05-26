@@ -93,24 +93,55 @@ while read -u3 FILE ; do
         LNG=${FILE%/LC_MESSAGES/*.po}
         LNG=${LNG##*/}
         ;;
-    */locale/*/*.po )
+    */locale/*/*.po | */localization/*/*.po | */messages/*/*.po | */msg/*/*.po )
         LNG=${FILE%/*.po}
         LNG=${LNG##*/}
         ;;
+    */locale/*.po | */localization/*.po | */messages/*.po | */msg/*.po )
+        LNG=${FILE%.po}
+        LNG=${LNG##*/}
+        ;;
+    */test*/*.po )
+        continue
+        ;;
     * )
         echo "Unknown path type for $FILE"
-        exit 1
         ;;
     esac
-    eval FILELIST_$LNG\[i\]=\"\$FILE\"
+    LNGVAR=${LNG//@/__AT__}
+    LNGVAR=${LNGVAR//./__DOT__}
+    LNGVAR=${LNGVAR//-/__DASH__}
+    if test -n "$SELECTED_LANGUAGES_ONLY" ; then
+        case "$LNG" in
+        zh_CN | zh_TW | fr | de | it | ja | pt_BR | es )
+            eval FILELIST_$LNGVAR\[i\]=\"\$FILE\"
+            ;;
+        * ) ;;
+        esac
+    else
+        eval FILELIST_$LNGVAR\[i\]=\"\$FILE\"
+    fi
     let i++
 done
-exec 3<-
+exec 3<&-
+set
 
 mkdir -p "$tgdir"
 pushd "`pwd`/download/extracted/" >/dev/null
 for VAR in ${!FILELIST_*} ; do
-    LNG=${VAR#FILELIST_}
-    eval msgcat -o "$tgdir/$LNG.po" \${$VAR\[@\]}
+    LNGVAR=${VAR#FILELIST_}
+    LNG=${LNGVAR//__AT__/@}
+    LNG=${LNG//__DOT__/.}
+    LNG=${LNG//__DASH__/-}
+    FIRST=true
+    eval "for i in \${$VAR[@]} ; do
+        if \$FIRST ; then
+            cp \"\$i\" \"\$tgdir/\$LNG.po\"
+            FIRST=false
+        else
+            msgcat -o \"\$tgdir/\$LNG.po.new\" \"\$tgdir/\$LNG.po\" \"\$i\"
+            mv \"\$tgdir/\$LNG.po.new\" \"\$tgdir/\$LNG.po\"
+        fi
+   done"
 done
 popd >/dev/null
