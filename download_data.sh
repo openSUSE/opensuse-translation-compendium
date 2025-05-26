@@ -2,17 +2,16 @@
 
 set -o nounset
 
-# This tool is space hungry!
-# Basically if fetches ARCHIVES.gz (~2.5GB extracted) from currently developed Leap,
-# and filters translatable files. Fetches binary rpms from the Leap oss repo, extracts individual files 
+# This tool is space and time hungry!
+# Basically if fetches ARCHIVES.gz (~2GB extracted) from currently developed Tumbleweed,
+# and filters translatable files. Fetches binary rpms from the Factory OSS repo, extracts individual files 
 # and generates compendium of all translations.
 # 
 # Right now we only extract .mo files.
 #
-# WARNING: Runtime can take a few hours (mostly downloading and later cpio extraction)
-# and will consume around 10GB in `pwd`/download in total !!!
+# WARNING: Runtime will take days (downloading, cpio extraction, msgcat)
+# and will consume around 30GB in total!
 
-#VERSION=
 URI="https://download.opensuse.org/tumbleweed/repo/oss/"
 # needed only for the tar.bz archive name
 # https://serverfault.com/questions/557350/parse-an-rpm-name-into-its-components
