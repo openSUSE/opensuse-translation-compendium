@@ -110,7 +110,7 @@ while read -u3 FILE ; do
     LNGVAR=${LNG//@/__AT__}
     LNGVAR=${LNGVAR//./__DOT__}
     LNGVAR=${LNGVAR//-/__DASH__}
-    if test -n "$SELECTED_LANGUAGES_ONLY" ; then
+    if test -n "${SELECTED_LANGUAGES_ONLY-}" ; then
         case "$LNG" in
         zh_CN | zh_TW | fr | de | it | ja | pt_BR | es )
             eval FILELIST_$LNGVAR\[i\]=\"\$FILE\"
