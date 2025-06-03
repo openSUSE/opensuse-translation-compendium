@@ -53,7 +53,6 @@ if [ ! -f "download_done.stamp" ]; then
     mkdir -p download/cache
     echo "Getting binaries"
     for key in "${!filelists[@]}"; do
-        if test -f download_done.stamp ; then break ; fi
         entry_arch=`echo $key | awk -F "/" '{ print $2}'`
         entry_rpm=`echo $key | awk -F "/" '{ print $NF}' | sed -s "s/://"`
         entry_name=`grep $key package_names.txt | awk '{ print $NF }'`
@@ -147,7 +146,6 @@ for VAR in ${!FILELIST_*} ; do
     LNGVAR=${VAR#FILELIST_}
     LNG=${LNGVAR//__AT__/@}
     LNG=${LNG//__DOT__/.}
-    LNG=${LNG//__DASH__/-}
     FIRST=true
     eval "for i in \${$VAR[@]} ; do
         if \$FIRST ; then
