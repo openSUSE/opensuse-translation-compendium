@@ -41,16 +41,14 @@ fi
 declare -A filelists
 
 # ./noarch/grub2-powerpc-ieee1275-2.06-150500.29.8.1.noarch.rpm:    drwxr-xr-x    2 root    root                        0 Oct 11 12:15 /usr/share/grub2/powerpc-ieee1275
-if [ ! -f "matched_files.txt" ]; then
+
+if [ ! -f "download_done.stamp" ]; then
     echo "Processing translatable file entries"
     while read line; do
         entry_rpm=`echo $line | awk '{ print $1}' | sed -s "s/://" `
         entry_file=`echo $line | awk '{ print $NF}'`
         [ "${filelists[$entry_rpm]+abc}" ] && filelists[$entry_rpm]="${filelists[$entry_rpm]} $entry_file" || filelists[$entry_rpm]="$entry_file"
     done < "matched_files.txt"
-fi
-
-if [ ! -f "download_done.stamp" ]; then
     mkdir -p download
     mkdir -p download/cache
     echo "Getting binaries"
