@@ -152,8 +152,8 @@ for VAR in ${!FILELIST_*} ; do
             cp \"\$i\" \"\$tgdir/\$LNG.po\"
             FIRST=false
         else
-            echo msgcat -o \"\$tgdir/\$LNG.po.new\" \"\$tgdir/\$LNG.po\" \"\$i\"
-            echo mv \"\$tgdir/\$LNG.po.new\" \"\$tgdir/\$LNG.po\"
+            msgcat -o \"\$tgdir/\$LNG.po.new\" \"\$tgdir/\$LNG.po\" \"\$i\"
+            mv \"\$tgdir/\$LNG.po.new\" \"\$tgdir/\$LNG.po\"
         fi
    done"
 done
